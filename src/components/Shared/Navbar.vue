@@ -162,12 +162,12 @@ function getIconUrl(type) {
         return coin.image;
     }
     
-    const basePath = process.env.NODE_ENV === "production" ? "finexa-app/" : ""
+    const basePath = import.meta.env.BASE_URL
     return `${basePath}src/assets/img/${key}.png`;
 }
 
 function handleImageError(event) {
-    const basePath = process.env.NODE_ENV === "production" ? "finexa-app/" : ""
+    const basePath = import.meta.env.BASE_URL
     event.target.src = `${basePath}src/assets/img/para.png`;;
 }
 function getCurrentPrice(type) {
