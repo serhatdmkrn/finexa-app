@@ -161,11 +161,14 @@ function getIconUrl(type) {
     if (coin && coin.image) {
         return coin.image;
     }
-    return `src/assets/img/${key}.png`;
+    
+    const basePath = process.env.NODE_ENV === "production" ? "finexa-app/" : ""
+    return `${basePath}src/assets/img/${key}.png`;
 }
 
 function handleImageError(event) {
-    event.target.src = '.src/assets/img/para.png'
+    const basePath = process.env.NODE_ENV === "production" ? "finexa-app/" : ""
+    event.target.src = `${basePath}src/assets/img/para.png`;;
 }
 function getCurrentPrice(type) {
     if (!type) return;

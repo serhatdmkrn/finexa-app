@@ -59,7 +59,6 @@
                 <div class="tabs" data-group="tab-2">
                     <button class="tab active" @click="showTab('crypto-listesi', $event, 'tab-2')">Crypto</button>
                     <button class="tab" @click="showTab('bist100-listesi', $event, 'tab-2')">BIST 100</button>
-                    <button class="tab" @click="showTab('sp500-listesi', $event, 'tab-2')">S&P 500</button>
                 </div>
 
 
@@ -91,22 +90,6 @@
                     <input v-model="searchObj.cryptoTerm" type="text" placeholder="Hisse ara..." class="search-box" />
                     <div class="market-row header">
                         <div>BIST 100</div>
-                        <div>Alış</div>
-                        <div>Satış</div>
-                        <div>24h Değişim</div>
-                    </div>
-                    <div class="market-row">
-                        <div>Yakında...</div>
-                        <div>0 ₺</div>
-                        <div>0 ₺</div>
-                        <div>%0,00</div>
-                    </div>
-                </div>
-
-                <div id="sp500-listesi" class="data-list" data-group="tab-2" style="display: none;">
-                    <input v-model="searchObj.cryptoTerm" type="text" placeholder="Hisse ara..." class="search-box" />
-                    <div class="market-row header">
-                        <div>S&P 500</div>
                         <div>Alış</div>
                         <div>Satış</div>
                         <div>24h Değişim</div>
