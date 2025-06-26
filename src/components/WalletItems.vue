@@ -43,7 +43,7 @@
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: isCyrpto(v.type.toUpperCase()) ? 6 : 2,
                             }) }}
-                            {{ v.type.toUpperCase() }}
+                            {{ isCyrpto(v.type.toUpperCase()) ? v.type.toUpperCase() : goldAndFinanceNamingArr.find(x => x.value === v.type.toUpperCase())?.label?.toUpperCase() || v.type.toUpperCase() }}
                             {{
                                 (parseFloat(getCurrentPrice(v.type)) * v.quantity).toLocaleString("tr-TR", {
                                     maximumFractionDigits: 2,
@@ -56,14 +56,14 @@
 
                     <div class="card-info">
                         <p>
-                            <strong>Miktar:</strong>
+                            <strong>Miktar: </strong>
                             {{ v.quantity.toLocaleString("tr-TR", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: isCyrpto(v.type.toUpperCase()) ? 6 : 2,
                             }) }}
                         </p>
                         <p>
-                            <strong>Alış Fiyatı:</strong>
+                            <strong>Alış Fiyatı: </strong>
                             {{ v.purchasePrice.toLocaleString("tr-TR", {
                                 maximumFractionDigits: isCyrpto(v.type.toUpperCase()) ? 6 : 2,
                                 minimumFractionDigits: 2,
@@ -71,7 +71,7 @@
                             ₺
                         </p>
                         <p>
-                            <strong>Güncel Fiyat:</strong>
+                            <strong>Güncel Fiyat: </strong>
                             {{ getCurrentPrice(v.type).toLocaleString("tr-TR", {
                                 maximumFractionDigits: isCyrpto(v.type.toUpperCase()) ? 6 : 2,
                                 minimumFractionDigits: 2,
@@ -79,7 +79,7 @@
                             ₺
                         </p>
                         <p>
-                            <strong>Kazanç:</strong>
+                            <strong>Kazanç: </strong>
                             <span :class="isProfit(v) ? 'kar' : 'zarar'">
                                 {{
                                     getProfit(v).toLocaleString("tr-TR", {
