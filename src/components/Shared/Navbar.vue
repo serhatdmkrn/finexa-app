@@ -44,7 +44,7 @@
                                 <img :src="getIconUrl(item.type)" :alt="item.type" @error="handleImageError" />
                                 <div class="wallet-info">
                                     <div class="line">
-                                        <span class="type">{{ item.type.toUpperCase() }}</span>
+                                        <span class="type">{{ item.type.replace(/-/g, ' ').toUpperCase() }}</span>
                                         <span class="total">₺{{ getTotalValue(item).toLocaleString('tr-TR', {
                                             maximumFractionDigits: 2
                                         }) }}</span>
@@ -163,7 +163,7 @@ function getIconUrl(type) {
     }
     
     const basePath = import.meta.env.BASE_URL
-    return `${basePath}img/para.png`;
+    return `${basePath}img/${key}.png`;
 }
 
 function handleImageError(event) {
