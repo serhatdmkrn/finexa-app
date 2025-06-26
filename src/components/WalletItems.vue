@@ -188,13 +188,13 @@ function getIconUrl(type) {
     }
 
     const basePath = import.meta.env.BASE_URL
-    return `${basePath}src/assets/img/${key}.png`;
+    return `${basePath}img/${key}.png`;
 }
 
 function onImageError(event) {
     event.target.onerror = null;
     const basePath = import.meta.env.BASE_URL
-    event.target.src = `${basePath}src/assets/img/para.png`;;
+    event.target.src = `${basePath}img/para.png`;;
 }
 
 function getCurrentPrice(type) {
