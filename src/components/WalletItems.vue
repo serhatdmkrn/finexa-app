@@ -158,6 +158,8 @@ const prices = computed(() => ({
     cryptoPrices: store.getters.cryptoPrices || [],
     financePriceKvp: store.getters.financePriceKvp || {},
     cryptoPriceKvp: store.getters.cryptoPriceKvp || {},
+    stockPrices: store.getters.stockPrices || [],
+    stockPriceKvp: store.getters.stockPriceKvp || {}
 }))
 
 async function getWalletItems() {
@@ -201,11 +203,16 @@ function getCurrentPrice(type) {
     if (!type) return 0;
 
     const key = type.toUpperCase();
+    const usdPrice = prices.value.financePriceKvp["USD"] || 1;
 
     const cryptoPrice = prices.value.cryptoPriceKvp[key];
     if (cryptoPrice) {
-        const usdPrice = prices.value.financePriceKvp["USD"] || 1;
         return Number(cryptoPrice) * Number(usdPrice) || 0;
+    }
+
+    const stockPrice = prices.value.stockPriceKvp[key];
+    if (stockPrice) {
+        return Number(stockPrice) * Number(usdPrice) || 0;
     }
 
     const financePrice = prices.value.financePriceKvp[key];

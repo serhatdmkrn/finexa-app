@@ -124,7 +124,9 @@ const prices = computed(() => ({
     financePrices: store.getters.financePrices || {},
     cryptoPrices: store.getters.cryptoPrices || [],
     financePriceKvp: store.getters.financePriceKvp || {},
-    cryptoPriceKvp: store.getters.cryptoPriceKvp || {}
+    cryptoPriceKvp: store.getters.cryptoPriceKvp || {},
+    stockPrices: store.getters.stockPrices || [],
+    stockPriceKvp: store.getters.stockPriceKvp || {}
 }))
 
 const isWalletHidden = ref(true)
@@ -158,6 +160,7 @@ function getIconUrl(type) {
 
     const coin = prices.value.cryptoPrices.find(x => x.symbol.toLowerCase() === key);
 
+    
     if (coin && coin.image) {
         return coin.image;
     }
@@ -174,11 +177,16 @@ function getCurrentPrice(type) {
     if (!type) return;
 
     const key = type.toUpperCase();
+    const usdPrice = prices.value.financePriceKvp["USD"];
 
     const cryptoPrice = prices.value.cryptoPriceKvp[key];
     if (cryptoPrice) {
-        const usdPrice = prices.value.financePriceKvp["USD"];
         return Number(cryptoPrice) * Number(usdPrice) || 0;
+    }
+
+    const stockPrice = prices.value.stockPriceKvp[key];
+    if (stockPrice) { 
+        return Number(stockPrice) * Number(usdPrice) || 0;
     }
 
     const financePrice = prices.value.financePriceKvp[key];
