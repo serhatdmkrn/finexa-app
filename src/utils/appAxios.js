@@ -33,7 +33,7 @@ appAxios.interceptors.response.use(
 
       if (status === 429) {
         toastr.error("Fazla istek atıldı. Lütfen tekrar deneyiniz.");
-      } else if (status === 401) {
+      } else if (status === 401 && store.getters._isAuthenticated) {
         store.commit('logoutUser')
         router.push({ path: '/' })
       } else {
