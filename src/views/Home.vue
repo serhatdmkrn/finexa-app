@@ -18,7 +18,7 @@
                         <div>Ziynet</div>
                         <div>Alış</div>
                         <div>Satış</div>
-                        <div>24h Değişim</div>
+                        <div>Değişim</div>
                     </div>
                     <div class="market-items">
                         <div v-for="(goldPrice, key) in goldPricesFiltered" :key="key" v-if="goldPrices"
@@ -39,7 +39,7 @@
                         <div>Döviz</div>
                         <div>Alış</div>
                         <div>Satış</div>
-                        <div>24h Değişim</div>
+                        <div>Değişim</div>
                     </div>
                     <div class="market-items">
                         <div v-for="(financePrice, key) in financePricesFiltered" :key="key" v-if="financePrices"
@@ -68,7 +68,7 @@
                         <div>Kripto (TOP 1000)</div>
                         <div>Fiyat</div>
                         <div>Piyasa Değeri</div>
-                        <div>24h Değişim</div>
+                        <div>Değişim</div>
                     </div>
                     <div class="market-items">
                         <div v-for="coin in cryptoPricesFiltered" :key="coin.id" class="market-row">
