@@ -166,12 +166,12 @@ const prices = computed(() => ({
 
 async function getWalletItems() {
     const response = await appAxios.get('/api/wallet');
-    const data = response.data
+    const data = response?.data
 
-    if (response.status == 200) {
+    if (response?.status == 200) {
         walletItems.value = data;
         store.commit("setWalletItems", walletItems.value);
-    } else {
+    } else if (data){
         toastr.error(data.message || 'Bir hata oluştu!')
     }
 
@@ -246,16 +246,16 @@ function getProfitPercent(v) {
 async function addWalletItem() {
     isLoading.value = true
     const response = await appAxios.post('/api/wallet', createWalletObj.value);
-    const data = response.data
+    const data = response?.data
 
-    if (response.status == 200) {
+    if (response?.status == 200) {
         walletItems.value.push(data)
         store.commit("setWalletItems", walletItems.value);
         toastr.success("Varlık eklendi!")
         showAddModal.value = false;
         createWalletObj.value = {}
         currentTab.value = "tab-1"
-    } else {
+    } else if (data) {
         toastr.error(data.message || 'Bir hata oluştu!')
     }
 
@@ -299,9 +299,9 @@ async function updateWalletItem() {
     const id = updateWalletObj.value.id;
 
     const response = await appAxios.put(`/api/wallet/${id}`, updateWalletObj.value);
-    const data = response.data;
+    const data = response?.data;
 
-    if (response.status === 200) {
+    if (response?.status === 200) {
         const index = walletItems.value.findIndex(item => item.id === id);
         if (index !== -1) {
             walletItems.value[index] = data;
@@ -310,7 +310,7 @@ async function updateWalletItem() {
         toastr.success('Varlık güncellendi!');
         currentTab.value = 'tab-1';
         updateWalletObj.value = {};
-    } else {
+    }  else if (data) {
         toastr.error(data.message || 'Bir hata oluştu!');
     }
 
@@ -338,18 +338,18 @@ async function deleteWalletItem(id) {
     isLoading.value = true;
 
     const response = await appAxios.delete(`/api/wallet/${id}`);
-    const data = response.data;
+    const data = response?.data;
 
-    if (response.status === 200) {
+    if (response?.status === 200) {
         walletItems.value = walletItems.value.filter(item => item.id !== id);
         store.commit("setWalletItems", walletItems.value);
         toastr.success('Varlık silindi!');
         currentTab.value = 'tab-1';
         createWalletObj.value = {};
-    } else {
+    } else if (data) {
         toastr.error(data.message || 'Bir hata oluştu!');
     }
-    
+
     isLoading.value = false;
 }
 

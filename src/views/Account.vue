@@ -56,15 +56,15 @@ async function changePassword() {
         newPassword: newPassword.value,
     }));
 
-    const data = await response.data
+    const data = await response?.data
 
-    if (response.status == 200) {
+    if (response?.status == 200) {
         toastr.success('Şifre değişikliği başarılı! Anasayfaya Yönlendiriliyorsunuz...')
 
         setTimeout(() => {
             router.push('/')
         }, 3000)
-    } else {
+    } else if (data) {
         toastr.error(data.message || 'Şifre değişikliği başarısız!')
     }
 

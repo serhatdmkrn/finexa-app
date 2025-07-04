@@ -75,16 +75,16 @@ async function loginUser() {
     password: password.value
   }));
 
-  const data = await response.data
+  const data = await response?.data
 
-  if (response.status == 200) {
+  if (response?.status == 200) {
     toastr.success('Giriş başarılı! Yönlendiriliyorsunuz...')
 
     setTimeout(() => {
       router.push('/')
       store.commit("setToken", data.token);
     }, 3000)
-  } else {
+  } else if (data) {
     toastr.error(data.message || 'Giriş başarısız!')
   }
 
@@ -108,17 +108,17 @@ async function submitForgotPassword() {
     email: forgotEmail.value
   }))
 
-  const data = await response.data
+  const data = await response?.data
 
-  if (response.status == 200) {
+  if (response?.status == 200) {
     toastr.success('Şifre sıfırlama bağlantısı gönderildi! Anasayfaya yönlendiriliyorsunuz...')
     setTimeout(() => {
       router.push('/')
     }, 3000)
-  } else {
+  } else if (data) {
     toastr.error(data.message || 'Bir hata oluştu!')
   }
-  
+
   isLoading.value = false
 }
 

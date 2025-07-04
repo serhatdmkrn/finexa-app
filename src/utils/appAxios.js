@@ -29,18 +29,18 @@ appAxios.interceptors.response.use(
   response => response,
   error => {
     if (error.response) {
-      const status = error.response.status;
+      const status = error.response?.status;
 
       if (status === 429) {
         toastr.error("Fazla istek atıldı. Lütfen tekrar deneyiniz.");
+        return Promise.reject(error);
       } else if (status === 401 && store.getters._isAuthenticated) {
         store.commit('logoutUser')
         router.push({ path: '/' })
+        return Promise.reject(error);
       } else {
-        toastr.error(error.response?.data?.message || 'Bir hata oluştu!')        
+        toastr.error(error.response?.data?.message || 'Bir hata oluştu!')
       }
     }
-
-    return Promise.reject(error);
   }
 );

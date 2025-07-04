@@ -70,15 +70,15 @@ async function resetPassword() {
     newPassword: newPassword.value
   }))
 
-  const data = response.data
+  const data = response?.data
 
-  if (response.status == 200) {
+  if (response?.status == 200) {
     toastr.success('Şifreniz başarıyla yenilendi! Yönlendiriliyorsunuz...')
 
     setTimeout(() => {
       router.push('/login')
     }, 3000)
-  } else {
+  } else if (data) {
     toastr.error(data.message || 'Bir hata oluştu!')
   }
 

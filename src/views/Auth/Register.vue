@@ -91,14 +91,14 @@ async function registerUser() {
     password: password.value
   }))
 
-  const data = await response.data
+  const data = await response?.data
 
-  if (response.status == 200) {
+  if (response?.status == 200) {
     toastr.success('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...')
     setTimeout(() => {
       router.push('/login')
     }, 2500)
-  } else {
+  } else if (data) {
     toastr.error(data.message || 'Kayıt başarısız!')
   }
 

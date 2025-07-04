@@ -71,8 +71,8 @@ export const store = createStore({
       ]);
 
       // Finans verisi
-      if (finansResponse.status === 200) {
-        const finansData = finansResponse.data;
+      if (finansResponse?.status === 200) {
+        const finansData = finansResponse?.data;
         const finansPriceKvp = {};
         for (const key in finansData) {
           const item = finansData[key];
@@ -88,8 +88,8 @@ export const store = createStore({
       }
 
       // Kripto verisi
-      if (cryptoResponse.status === 200) {
-        const cryptoData = cryptoResponse.data.filter(x => x.symbol != 'meta');
+      if (cryptoResponse?.status === 200) {
+        const cryptoData = cryptoResponse?.data.filter(x => x.symbol != 'meta');
         const cryptoPriceKvp = {};
         cryptoData.forEach(coin => {
           cryptoPriceKvp[coin.symbol.toUpperCase()] = coin.current_price;
@@ -101,8 +101,8 @@ export const store = createStore({
       }
 
       // Hisse verisi
-      if (stockResponse.status === 200) {
-        const stockData = stockResponse.data;
+      if (stockResponse?.status === 200) {
+        const stockData = stockResponse?.data;
         const stockPriceKvp = {};
         stockData.forEach(stock => {
           stockPriceKvp[stock.symbol.toUpperCase()] = stock.currentPrice;
