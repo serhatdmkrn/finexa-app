@@ -5,7 +5,7 @@ import { toastr } from '@/utils/toastr';
 
 
 export const appAxios = axios.create({
-  baseURL: "https://localhost:7264",
+  baseURL: "https://premier-beetle-serhatdmkrn-5968f094.koyeb.app",
   headers: {
     "Content-Type": "application/json"
   }
