@@ -112,7 +112,7 @@
 
             <div class="calculator-box">
                 <h4>Hesaplama Aracı</h4>
-                <small>-- Döviz & Ziynet & Crypto & BIST 100 & S&P 500 --</small>
+                <small>-- Döviz & Ziynet & Crypto & S&P 500 --</small>
 
                 <label>Ürün Seçimi:</label>
 
