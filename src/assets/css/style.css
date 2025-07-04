@@ -37,6 +37,7 @@ html, body {
 .logo {
   height: 150px;
   object-fit: contain;
+  margin-top: 10px;
 }
 
 .logo-text {
@@ -709,7 +710,7 @@ html, body {
   box-shadow: rgba(0, 0, 0, 0.9) 0px 6px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   min-width: 480px;
   max-width: 500px;
 }

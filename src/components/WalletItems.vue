@@ -43,12 +43,13 @@
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: isCyrpto(v.type.toUpperCase()) ? 6 : 2,
                             }) }}
-                            {{ isCyrpto(v.type.toUpperCase()) ? v.type.toUpperCase() : goldAndFinanceNamingArr.find(x => x.value === v.type.toUpperCase())?.label?.toUpperCase() || v.type.toUpperCase() }}
+                            {{isCyrpto(v.type.toUpperCase()) ? v.type.toUpperCase() : goldAndFinanceNamingArr.find(x =>
+                                x.value === v.type.toUpperCase())?.label?.toUpperCase() || v.type.toUpperCase()}}
                             {{
                                 (parseFloat(getCurrentPrice(v.type)) * v.quantity).toLocaleString("tr-TR", {
                                     maximumFractionDigits: 2,
                                     minimumFractionDigits: 2,
-                            })
+                                })
                             }}
                             ₺
                         </span>
@@ -86,8 +87,8 @@
                                         style: "currency",
                                         currency: "TRY",
                                         maximumFractionDigits: 2,
-                                minimumFractionDigits: 2,
-                                })
+                                        minimumFractionDigits: 2,
+                                    })
                                 }}
                                 ({{ getProfitPercent(v) }}%)
                             </span>
@@ -115,8 +116,9 @@
                     <label>Alış Fiyatı:</label>
                     <input type="number" v-model="createWalletObj.purchasePrice" step="0.000001" required />
                     <div class="confirm-modal-buttons" style="margin-top: 10px;">
-                        <button type="submit" class="btn-yes" :disabled="isLoading">{{ isLoading ? "Varlık Ekleniyor..." : "Varlık Ekle"
-                            }}</button>
+                        <button type="submit" class="btn-yes" :disabled="isLoading">{{ isLoading ? "Varlık Ekleniyor..."
+                            : "Varlık Ekle"
+                        }}</button>
                         <button type="button" class="btn-cancel" @click="closeAddModal">İptal</button>
                     </div>
                 </form>
@@ -163,21 +165,17 @@ const prices = computed(() => ({
 }))
 
 async function getWalletItems() {
-    try {
-        const response = await appAxios.get('/api/wallet');
-        const data = response.data
+    const response = await appAxios.get('/api/wallet');
+    const data = response.data
 
-        if (response.status == 200) {
-            walletItems.value = data;
-            store.commit("setWalletItems", walletItems.value);
-        } else {
-            toastr.error(data.message || 'Bir hata oluştu!')
-        }
-    } catch (error) {
-        toastr.error(error.response?.data?.message || 'Bir hata oluştu!')
-    } finally {
-        isLoading.value = false
+    if (response.status == 200) {
+        walletItems.value = data;
+        store.commit("setWalletItems", walletItems.value);
+    } else {
+        toastr.error(data.message || 'Bir hata oluştu!')
     }
+
+    isLoading.value = false
 }
 
 function getIconUrl(type) {
@@ -247,25 +245,22 @@ function getProfitPercent(v) {
 
 async function addWalletItem() {
     isLoading.value = true
-    try {
-        const response = await appAxios.post('/api/wallet', createWalletObj.value);
-        const data = response.data
+    const response = await appAxios.post('/api/wallet', createWalletObj.value);
+    const data = response.data
 
-        if (response.status == 200) {
-            walletItems.value.push(data)
-            store.commit("setWalletItems", walletItems.value);
-            toastr.success("Varlık eklendi!")
-            showAddModal.value = false;  // modalı kapatıyoruz
-            createWalletObj.value = {}
-            currentTab.value = "tab-1"
-        } else {
-            toastr.error(data.message || 'Bir hata oluştu!')
-        }
-    } catch (error) {
-        toastr.error(error.response?.data?.message || 'Bir hata oluştu!')
-    } finally {
-        isLoading.value = false
+    if (response.status == 200) {
+        walletItems.value.push(data)
+        store.commit("setWalletItems", walletItems.value);
+        toastr.success("Varlık eklendi!")
+        showAddModal.value = false;
+        createWalletObj.value = {}
+        currentTab.value = "tab-1"
+    } else {
+        toastr.error(data.message || 'Bir hata oluştu!')
     }
+
+    isLoading.value = false
+
 }
 
 function openAddModal() {
@@ -301,29 +296,25 @@ async function confirmUpdate() {
 async function updateWalletItem() {
     isLoading.value = true;
 
-    try {
-        const id = updateWalletObj.value.id;
+    const id = updateWalletObj.value.id;
 
-        const response = await appAxios.put(`/api/wallet/${id}`, updateWalletObj.value);
-        const data = response.data;
+    const response = await appAxios.put(`/api/wallet/${id}`, updateWalletObj.value);
+    const data = response.data;
 
-        if (response.status === 200) {
-            const index = walletItems.value.findIndex(item => item.id === id);
-            if (index !== -1) {
-                walletItems.value[index] = data;
-            }
-            store.commit("setWalletItems", walletItems.value);
-            toastr.success('Varlık güncellendi!');
-            currentTab.value = 'tab-1';
-            updateWalletObj.value = {};
-        } else {
-            toastr.error(data.message || 'Bir hata oluştu!');
+    if (response.status === 200) {
+        const index = walletItems.value.findIndex(item => item.id === id);
+        if (index !== -1) {
+            walletItems.value[index] = data;
         }
-    } catch (error) {
-        toastr.error(error.response?.data?.message || 'Bir hata oluştu!');
-    } finally {
-        isLoading.value = false;
+        store.commit("setWalletItems", walletItems.value);
+        toastr.success('Varlık güncellendi!');
+        currentTab.value = 'tab-1';
+        updateWalletObj.value = {};
+    } else {
+        toastr.error(data.message || 'Bir hata oluştu!');
     }
+
+    isLoading.value = false;
 }
 
 function openDeleteModal(id) {
@@ -346,24 +337,20 @@ async function confirmDelete() {
 async function deleteWalletItem(id) {
     isLoading.value = true;
 
-    try {
-        const response = await appAxios.delete(`/api/wallet/${id}`);
-        const data = response.data;
+    const response = await appAxios.delete(`/api/wallet/${id}`);
+    const data = response.data;
 
-        if (response.status === 200) {
-            walletItems.value = walletItems.value.filter(item => item.id !== id);
-            store.commit("setWalletItems", walletItems.value);
-            toastr.success('Varlık silindi!');
-            currentTab.value = 'tab-1';
-            createWalletObj.value = {};
-        } else {
-            toastr.error(data.message || 'Bir hata oluştu!');
-        }
-    } catch (error) {
-        toastr.error(error.response?.data?.message || 'Bir hata oluştu!');
-    } finally {
-        isLoading.value = false;
+    if (response.status === 200) {
+        walletItems.value = walletItems.value.filter(item => item.id !== id);
+        store.commit("setWalletItems", walletItems.value);
+        toastr.success('Varlık silindi!');
+        currentTab.value = 'tab-1';
+        createWalletObj.value = {};
+    } else {
+        toastr.error(data.message || 'Bir hata oluştu!');
     }
+    
+    isLoading.value = false;
 }
 
 onMounted(() => {

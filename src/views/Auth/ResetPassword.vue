@@ -65,27 +65,23 @@ async function resetPassword() {
 
   isLoading.value = true
 
-  try {
-    const response = await appAxios.post('/api/Auth/reset-password', JSON.stringify({
-      token: token.value,
-      newPassword: newPassword.value
-    }))
+  const response = await appAxios.post('/api/Auth/reset-password', JSON.stringify({
+    token: token.value,
+    newPassword: newPassword.value
+  }))
 
-    const data = response.data
+  const data = response.data
 
-    if (response.status == 200) {
-      toastr.success('Şifreniz başarıyla yenilendi! Yönlendiriliyorsunuz...')
+  if (response.status == 200) {
+    toastr.success('Şifreniz başarıyla yenilendi! Yönlendiriliyorsunuz...')
 
-      setTimeout(() => {
-        router.push('/login')
-      }, 3000)
-    } else {
-        toastr.error(data.message || 'Bir hata oluştu!')
-    }
-  } catch (error) {
-    toastr.error(error.response.data.message || 'İşlem sırasında bir hata oluştu.')
-  } finally {
-    isLoading.value = false
+    setTimeout(() => {
+      router.push('/login')
+    }, 3000)
+  } else {
+    toastr.error(data.message || 'Bir hata oluştu!')
   }
+
+  isLoading.value = false
 }
 </script>

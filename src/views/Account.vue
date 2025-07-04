@@ -51,28 +51,23 @@ async function changePassword() {
 
     isLoading.value = true
 
-    try {
+    const response = await appAxios.post('/api/auth/change-password', JSON.stringify({
+        currentPassword: currentPassword.value,
+        newPassword: newPassword.value,
+    }));
 
-        const response = await appAxios.post('/api/auth/change-password', JSON.stringify({
-            currentPassword: currentPassword.value,
-            newPassword: newPassword.value,
-        }));
+    const data = await response.data
 
-        const data = await response.data
+    if (response.status == 200) {
+        toastr.success('Şifre değişikliği başarılı! Anasayfaya Yönlendiriliyorsunuz...')
 
-        if (response.status == 200) {
-            toastr.success('Şifre değişikliği başarılı! Anasayfaya Yönlendiriliyorsunuz...')
-
-            setTimeout(() => {
-                router.push('/')
-            }, 3000)
-        } else {
-            toastr.error(data.message || 'Şifre değişikliği başarısız!')
-        }
-    } catch (error) {
-        toastr.error(error.response.data.message || 'Bir hata oluştu!')
-    } finally {
-        isLoading.value = false
+        setTimeout(() => {
+            router.push('/')
+        }, 3000)
+    } else {
+        toastr.error(data.message || 'Şifre değişikliği başarısız!')
     }
+
+    isLoading.value = false
 }
 </script>

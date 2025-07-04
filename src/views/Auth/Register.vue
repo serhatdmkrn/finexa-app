@@ -84,30 +84,25 @@ async function registerUser() {
   }
 
   isLoading.value = true
+  const response = await appAxios.post('/api/auth/register', JSON.stringify({
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    password: password.value
+  }))
 
-  try {
-    const response = await appAxios.post('/api/auth/register', JSON.stringify({
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: email.value,
-      password: password.value
-    }))
+  const data = await response.data
 
-    const data = await response.data
-
-    if (response.status == 200) {
-      toastr.success('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...')
-      setTimeout(() => {
-        router.push('/login')
-      }, 2500)
-    } else {
-      toastr.error(data.message || 'Kayıt başarısız!')
-    }
-  } catch (error) {
-    toastr.error(error.response.data.message || 'Bir hata oluştu!')
-  } finally {
-    isLoading.value = false
+  if (response.status == 200) {
+    toastr.success('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...')
+    setTimeout(() => {
+      router.push('/login')
+    }, 2500)
+  } else {
+    toastr.error(data.message || 'Kayıt başarısız!')
   }
+
+  isLoading.value = false
 }
 
 function goToLogin() {

@@ -28,7 +28,8 @@
       <h2>Şifre Sıfırlama</h2>
       <p>Lütfen e-posta adresinizi girin. Size sıfırlama bağlantısı göndereceğiz.</p>
       <input type="email" name="forgotEmail" v-model.trim="forgotEmail" placeholder="E-posta adresiniz" required>
-      <button @click="submitForgotPassword" :disabled="isLoading">{{ isLoading ? "Gönderiliyor..." : "Gönder"}}</button>
+      <button @click="submitForgotPassword" :disabled="isLoading">{{ isLoading ? "Gönderiliyor..." : "Gönder"
+        }}</button>
     </div>
   </div>
 </template>
@@ -69,30 +70,27 @@ async function loginUser() {
 
   isLoading.value = true
 
-  try {
-    const response = await appAxios.post('/api/auth/login', JSON.stringify({
-        email: email.value,
-        password: password.value
-    }));
+  const response = await appAxios.post('/api/auth/login', JSON.stringify({
+    email: email.value,
+    password: password.value
+  }));
 
-    const data = await response.data
+  const data = await response.data
 
-    if (response.status == 200) {
-      toastr.success('Giriş başarılı! Yönlendiriliyorsunuz...')
+  if (response.status == 200) {
+    toastr.success('Giriş başarılı! Yönlendiriliyorsunuz...')
 
-      setTimeout(() => {
-        router.push('/')
-        store.commit("setToken", data.token);
-      }, 3000)
-    } else {
-      toastr.error(data.message || 'Giriş başarısız!')
-    }
-  } catch (error) {
-    toastr.error(error.response.data.message || 'Bir hata oluştu!')
-  } finally {
-    isLoading.value = false
+    setTimeout(() => {
+      router.push('/')
+      store.commit("setToken", data.token);
+    }, 3000)
+  } else {
+    toastr.error(data.message || 'Giriş başarısız!')
   }
+
+  isLoading.value = false
 }
+
 
 function showForgotPassword() {
   showForgotModal.value = true
@@ -104,29 +102,26 @@ async function submitForgotPassword() {
     return
   }
 
-  isLoading.value = true 
+  isLoading.value = true
 
-  try {
-    const response = await appAxios.post('/api/auth/forgot-password', JSON.stringify({
-        email: forgotEmail.value
-    }))
+  const response = await appAxios.post('/api/auth/forgot-password', JSON.stringify({
+    email: forgotEmail.value
+  }))
 
-    const data = await response.data
+  const data = await response.data
 
-    if (response.status == 200) {
-        toastr.success('Şifre sıfırlama bağlantısı gönderildi! Anasayfaya yönlendiriliyorsunuz...')
-        setTimeout(() => {
-            router.push('/')
-        }, 3000)
-    } else {
-        toastr.error(data.message || 'Bir hata oluştu!')
-    }
-  } catch (error) {
-    toastr.error(error.response.data.message || 'Bir hata oluştu!')
-  } finally {
-    isLoading.value = false
+  if (response.status == 200) {
+    toastr.success('Şifre sıfırlama bağlantısı gönderildi! Anasayfaya yönlendiriliyorsunuz...')
+    setTimeout(() => {
+      router.push('/')
+    }, 3000)
+  } else {
+    toastr.error(data.message || 'Bir hata oluştu!')
   }
+  
+  isLoading.value = false
 }
+
 
 function goToRegister() {
   router.push('/register')

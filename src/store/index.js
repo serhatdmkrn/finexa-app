@@ -63,62 +63,56 @@ export const store = createStore({
     walletItems: (state) => state.walletItems,
   },
   actions: {
-async getCurrentPrices({ commit }) {
-  try {
-    const [finansResponse, cryptoResponse, stockResponse] = await Promise.all([
-      appAxios.get('/api/finance/getall'),
-      appAxios.get('/api/crypto/top1000'),
-      appAxios.get('/api/stock/all'),
-    ]);
+    async getCurrentPrices({ commit }) {
+      const [finansResponse, cryptoResponse, stockResponse] = await Promise.all([
+        appAxios.get('/api/finance/getall'),
+        appAxios.get('/api/crypto/top1000'),
+        appAxios.get('/api/stock/all'),
+      ]);
 
-    // Finans verisi
-    if (finansResponse.status === 200) {
-      const finansData = finansResponse.data;
-      const finansPriceKvp = {};
-      for (const key in finansData) {
-        const item = finansData[key];
-        if (item && item.Satış) {
-          const price = parseFloat(item.Satış.toString().replace(/\./g, '').replace(',', '.'));
-          finansPriceKvp[key.toUpperCase()] = isNaN(price) ? null : price;
+      // Finans verisi
+      if (finansResponse.status === 200) {
+        const finansData = finansResponse.data;
+        const finansPriceKvp = {};
+        for (const key in finansData) {
+          const item = finansData[key];
+          if (item && item.Satış) {
+            const price = parseFloat(item.Satış.toString().replace(/\./g, '').replace(',', '.'));
+            finansPriceKvp[key.toUpperCase()] = isNaN(price) ? null : price;
+          }
         }
+        commit('setFinancePrices', finansData);
+        commit('setFinancePriceKvp', finansPriceKvp);
+      } else {
+        toastr.error('Finans verisi alınamadı');
       }
-      commit('setFinancePrices', finansData);
-      commit('setFinancePriceKvp', finansPriceKvp);
-    } else {
-      toastr.error('Finans verisi alınamadı');
-    }
 
-    // Kripto verisi
-    if (cryptoResponse.status === 200) {
-      const cryptoData = cryptoResponse.data.filter(x => x.symbol != 'meta');
-      const cryptoPriceKvp = {};
-      cryptoData.forEach(coin => {
-        cryptoPriceKvp[coin.symbol.toUpperCase()] = coin.current_price;
-      });
-      commit('setCryptoPrices', cryptoData);
-      commit('setCryptoPriceKvp', cryptoPriceKvp);
-    } else {
-      toastr.error('Kripto verisi alınamadı');
-    }
+      // Kripto verisi
+      if (cryptoResponse.status === 200) {
+        const cryptoData = cryptoResponse.data.filter(x => x.symbol != 'meta');
+        const cryptoPriceKvp = {};
+        cryptoData.forEach(coin => {
+          cryptoPriceKvp[coin.symbol.toUpperCase()] = coin.current_price;
+        });
+        commit('setCryptoPrices', cryptoData);
+        commit('setCryptoPriceKvp', cryptoPriceKvp);
+      } else {
+        toastr.error('Kripto verisi alınamadı');
+      }
 
-    // Hisse verisi
-    if (stockResponse.status === 200) {
-      const stockData = stockResponse.data;
-      const stockPriceKvp = {};
-      stockData.forEach(stock => {
-        stockPriceKvp[stock.symbol.toUpperCase()] = stock.currentPrice;
-      });
-      commit('setStockPrices', stockData);
-      commit('setStockPriceKvp', stockPriceKvp);
-    } else {
-      toastr.error('Hisse verisi alınamadı');
+      // Hisse verisi
+      if (stockResponse.status === 200) {
+        const stockData = stockResponse.data;
+        const stockPriceKvp = {};
+        stockData.forEach(stock => {
+          stockPriceKvp[stock.symbol.toUpperCase()] = stock.currentPrice;
+        });
+        commit('setStockPrices', stockData);
+        commit('setStockPriceKvp', stockPriceKvp);
+      } else {
+        toastr.error('Hisse verisi alınamadı');
+      }
     }
-
-  } catch (err) {
-    console.error('GetCurrentPrices hatası:', err);
-    toastr.error('Veriler alınırken bir hata oluştu.');
-  }
-}
 
   },
   plugins: [

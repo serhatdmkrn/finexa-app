@@ -1,9 +1,11 @@
 import axios from "axios";
 import router from '../router';
 import store from '../store';
+import { toastr } from '@/utils/toastr';
+
 
 export const appAxios = axios.create({
-  baseURL: "https://premier-beetle-serhatdmkrn-5968f094.koyeb.app",
+  baseURL: "https://localhost:7264",
   headers: {
     "Content-Type": "application/json"
   }
@@ -24,13 +26,18 @@ appAxios.interceptors.request.use(
 );
 
 appAxios.interceptors.response.use(
-  response => {
-    return response;
-  },
+  response => response,
   error => {
     if (error.response) {
-      if (error.response.status === 429) {
-        this.$toastr.error(`Too many requests. Please try again later`);
+      const status = error.response.status;
+
+      if (status === 429) {
+        toastr.error("Fazla istek atıldı. Lütfen tekrar deneyiniz.");
+      } else if (status === 401) {
+        store.commit('logoutUser')
+        router.push({ path: '/' })
+      } else {
+        toastr.error(error.response?.data?.message || 'Bir hata oluştu!')        
       }
     }
 
